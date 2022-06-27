@@ -1,7 +1,7 @@
 package com.itheima.reggie.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.itheima.reggie.common.R;
+import com.itheima.reggie.common.Result;
 import lombok.extern.apachecommons.CommonsLog;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -50,7 +50,7 @@ public class LoginCheckFilter implements Filter {
         }
         log.info("用户未登录");
         //5.如果未登录则返回未登录结果，通过输出流的方式向客户端页面相应数据
-        response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
+        response.getWriter().write(JSON.toJSONString(Result.error("NOTLOGIN")));
         return;
     }
 
