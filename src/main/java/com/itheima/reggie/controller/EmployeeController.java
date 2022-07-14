@@ -8,6 +8,8 @@ import com.itheima.reggie.common.Result;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
@@ -23,6 +25,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/employee")
 public class EmployeeController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
     @Autowired
     private EmployeeService employeeService;
 
@@ -87,9 +90,15 @@ public class EmployeeController {
 
     }
 
+    /**
+     * 新增员工
+     * @param request
+     * @param employee
+     * @return
+     */
     @PostMapping
     public Result<String> save(HttpServletRequest request ,@RequestBody Employee employee){
-        log.info("新增员工，员工信息:{}", employee.toString());
+        LOGGER.info("新增员工，员工信息:{}", employee.toString());
 
         //设置初始密码：并用md5加密
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes(StandardCharsets.UTF_8)));
@@ -114,7 +123,7 @@ public class EmployeeController {
      */
     @GetMapping("/page")
     public Result<Page> page(int page, int pageSize, String name){
-        log.info("page = {}, pageSize = {}, name ={}",page, pageSize, name);
+        LOGGER.info("page = {}, pageSize = {}, name ={}",page, pageSize, name);
 
         //构造分页构造器
         Page pageInfo = new Page(page, pageSize);
@@ -131,4 +140,31 @@ public class EmployeeController {
         return Result.success(pageInfo);
 
     }
+
+    /**
+     * 根据用户ID取修改状态
+     * @param request
+     * @param employee
+     * @return
+     */
+    @PostMapping("/update")
+    public Result<String> update(HttpServletRequest request, @RequestBody Employee employee){
+        Long empId = (Long) request.getSession().getAttribute("employee");
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(empId);
+        employeeService.updateById(employee);
+        return Result.success("员工信息修改成功");
+
+    }
+
+    @GetMapping("/{id}")
+    public Result<Employee> getById(@PathVariable Long id){
+        LOGGER.info("根据ID查询员工信息");
+        Employee employee = employeeService.getById(id);
+        if( employee == null){
+
+        }
+        return Result.success(employee);
+    }
+
 }

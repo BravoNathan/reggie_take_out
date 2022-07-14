@@ -24,9 +24,6 @@ public class GlobalExceptionHandler {
             String msg = split[2] + "已存在";
             return Result.error(msg);
         }
-
-
         return Result.error("未知错误");
-
     }
 }
