@@ -1,6 +1,7 @@
 package com.itheima.reggie.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.itheima.reggie.common.BaseContext;
 import com.itheima.reggie.common.Result;
 import lombok.extern.apachecommons.CommonsLog;
 import lombok.extern.slf4j.Slf4j;
@@ -19,22 +20,27 @@ public class LoginCheckFilter implements Filter {
     // 路径匹配器，支持通配符
     public static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 
+    //定义不需要处理的请求路径
+    String[] urls = new String[]{
+            "/employee/login",
+            "/employee/logout",
+            "/backend/**",
+            "/front/**",
+            "/swagger-ui.html"
+    };
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-//        1.获取本次请求的URI
+        Long empId = (Long) request.getSession().getAttribute("employee");
+        BaseContext.setCurrentId(empId);
+
+        // 1.获取本次请求的URI
         String requestURI = request.getRequestURI();
         log.info("拦截到请求:{}",requestURI);
-        //定义不需要处理的请求路径
-        String[] urls = new String[]{
-                "/employee/login",
-                "/employee/logout",
-                "/backend/**",
-                "/front/**",
-                "/"
-        };
+
         //2、判断本次请求是否需要处理
         boolean check = check(urls, requestURI);
         //3、如果不需要处理，则直接放行
@@ -62,7 +68,6 @@ public class LoginCheckFilter implements Filter {
                 return true;
             }
         }
-
         return false;
     }
 

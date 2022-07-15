@@ -7,6 +7,8 @@ import com.itheima.reggie.common.Result;
 import com.itheima.reggie.common.Result;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.service.EmployeeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
+@Api(tags = "员工管理")
 @Slf4j
 @RestController
 @RequestMapping("/employee")
@@ -35,6 +38,7 @@ public class EmployeeController {
      * @param employee
      * @return
      */
+    @ApiOperation(value = "用户登录")
     @PostMapping("/login")
     public Result<Employee> login(HttpServletRequest request, @RequestBody Employee employee){
         /**
@@ -83,6 +87,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/logout")
+    @ApiOperation(value = "用户登出")
     public Result<String> logout(HttpServletRequest request){
         //清理Session中保存的当前登录员工的id
         request.getSession().removeAttribute("employee");
@@ -97,6 +102,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping
+    @ApiOperation(value = "新增员工")
     public Result<String> save(HttpServletRequest request ,@RequestBody Employee employee){
         LOGGER.info("新增员工，员工信息:{}", employee.toString());
 
@@ -121,6 +127,7 @@ public class EmployeeController {
      * @param name
      * @return
      */
+    @ApiOperation(value = "查询分页")
     @GetMapping("/page")
     public Result<Page> page(int page, int pageSize, String name){
         LOGGER.info("page = {}, pageSize = {}, name ={}",page, pageSize, name);
@@ -147,7 +154,8 @@ public class EmployeeController {
      * @param employee
      * @return
      */
-    @PostMapping("/update")
+    @PutMapping
+    @ApiOperation(value = "更新员工信息")
     public Result<String> update(HttpServletRequest request, @RequestBody Employee employee){
         Long empId = (Long) request.getSession().getAttribute("employee");
         employee.setUpdateTime(LocalDateTime.now());
@@ -158,11 +166,12 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value = "查询员工信息")
     public Result<Employee> getById(@PathVariable Long id){
         LOGGER.info("根据ID查询员工信息");
         Employee employee = employeeService.getById(id);
         if( employee == null){
-
+            return Result.error("查无此人");
         }
         return Result.success(employee);
     }
