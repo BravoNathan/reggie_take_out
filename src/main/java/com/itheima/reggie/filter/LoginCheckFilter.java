@@ -5,6 +5,8 @@ import com.itheima.reggie.common.BaseContext;
 import com.itheima.reggie.common.Result;
 import lombok.extern.apachecommons.CommonsLog;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
@@ -19,14 +21,16 @@ import java.io.IOException;
 public class LoginCheckFilter implements Filter {
     // 路径匹配器，支持通配符
     public static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
-
     //定义不需要处理的请求路径
     String[] urls = new String[]{
             "/employee/login",
             "/employee/logout",
             "/backend/**",
             "/front/**",
-            "/swagger-ui.html"
+            // swagger related paths
+            "/doc.html",
+            "/swagger-resources/**",
+            "/v2/api-docs",
     };
 
     @Override
@@ -52,6 +56,8 @@ public class LoginCheckFilter implements Filter {
         //4、判断登录状态，如果已登录，则直接放行5、如果未登录则返回未登录结果
         if(request.getSession().getAttribute("employee") != null){
             log.info("用户已经登录，用户id为",request.getSession().getAttribute("employee"));
+            long id = Thread.currentThread().getId();
+            log.info("线程为{}",id);
             filterChain.doFilter(request,response);
             return;
         }

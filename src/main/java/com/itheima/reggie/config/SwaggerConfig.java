@@ -1,5 +1,6 @@
 package com.itheima.reggie.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -19,12 +20,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @Configuration
 @EnableSwagger2
+@Slf4j
 public class SwaggerConfig {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(SwaggerConfig.class);
 
     static {
-        LOGGER.info("开始加载Swagger配置");
+        log.info("开始加载Swagger配置");
     }
 
     @Bean

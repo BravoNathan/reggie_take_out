@@ -1,10 +1,15 @@
  package com.itheima.reggie.common;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Result<T> {
 
     private Integer code; //编码：1成功，0和其它数字为失败
@@ -21,7 +26,6 @@ public class Result<T> {
         r.code = 1;
         return r;
     }
-
     public static <T> Result<T> error(String msg) {
         Result r = new Result();
         r.msg = msg;

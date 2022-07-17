@@ -27,8 +27,6 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
     @Autowired
     private EmployeeService employeeService;
 
@@ -104,17 +102,17 @@ public class EmployeeController {
     @PostMapping
     @ApiOperation(value = "新增员工")
     public Result<String> save(HttpServletRequest request ,@RequestBody Employee employee){
-        LOGGER.info("新增员工，员工信息:{}", employee.toString());
+        log.info("新增员工，员工信息:{}", employee.toString());
 
         //设置初始密码：并用md5加密
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes(StandardCharsets.UTF_8)));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
 
         //获取当前用户id
-        Long empId = (Long) request.getSession().getAttribute("employee");
-        employee.setCreateUser(empId);
-        employee.setUpdateUser(empId);
+//        Long empId = (Long) request.getSession().getAttribute("employee");
+//        employee.setCreateUser(empId);
+//        employee.setUpdateUser(empId);
 
         employeeService.save(employee);
         return Result.success("新增员工成功");
@@ -130,7 +128,7 @@ public class EmployeeController {
     @ApiOperation(value = "查询分页")
     @GetMapping("/page")
     public Result<Page> page(int page, int pageSize, String name){
-        LOGGER.info("page = {}, pageSize = {}, name ={}",page, pageSize, name);
+        log.info("page = {}, pageSize = {}, name ={}",page, pageSize, name);
 
         //构造分页构造器
         Page pageInfo = new Page(page, pageSize);
@@ -157,9 +155,11 @@ public class EmployeeController {
     @PutMapping
     @ApiOperation(value = "更新员工信息")
     public Result<String> update(HttpServletRequest request, @RequestBody Employee employee){
-        Long empId = (Long) request.getSession().getAttribute("employee");
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(empId);
+//        Long empId = (Long) request.getSession().getAttribute("employee");
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateUser(empId);
+        long id = Thread.currentThread().getId();
+        log.info("线程为{}",id);
         employeeService.updateById(employee);
         return Result.success("员工信息修改成功");
 
@@ -168,7 +168,7 @@ public class EmployeeController {
     @GetMapping("/{id}")
     @ApiOperation(value = "查询员工信息")
     public Result<Employee> getById(@PathVariable Long id){
-        LOGGER.info("根据ID查询员工信息");
+        log.info("根据ID查询员工信息");
         Employee employee = employeeService.getById(id);
         if( employee == null){
             return Result.error("查无此人");
