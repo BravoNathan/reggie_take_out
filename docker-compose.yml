@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - 3307:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
