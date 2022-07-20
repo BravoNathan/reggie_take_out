@@ -68,7 +68,7 @@ public class CommonController {
 
     @ApiOperation(value = "文件下载")
     @GetMapping("/download")
-    public void downLoad(String name, HttpServletResponse response){
+    public void download(String name, HttpServletResponse response){
         try {
             // 读取文件内容
             FileInputStream fileInputStream = new FileInputStream(new File(this.basePath + name));

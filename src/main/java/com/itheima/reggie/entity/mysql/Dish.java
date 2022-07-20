@@ -1,7 +1,5 @@
-package com.itheima.reggie.entity;
+package com.itheima.reggie.entity.mysql;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -10,13 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @ApiModel(value = "菜品")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Dish implements Serializable {
+public class Dish extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 21L;
 
@@ -54,21 +51,6 @@ public class Dish implements Serializable {
     //顺序
     @ApiModelProperty(value = "顺序")
     private Integer sort;
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
-
-    @ApiModelProperty(value = "创建人")
-    @TableField(fill = FieldFill.INSERT)
-    private Long createUser;
-
-    @ApiModelProperty(value = "更新人")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Long updateUser;
 
     //是否删除
     @ApiModelProperty(value = "是否删除")

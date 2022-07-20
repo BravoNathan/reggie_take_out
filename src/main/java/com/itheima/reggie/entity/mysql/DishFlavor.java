@@ -1,16 +1,12 @@
-package com.itheima.reggie.entity;
+package com.itheima.reggie.entity.mysql;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import jdk.jfr.DataAmount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * @Author: zhengyang.li
@@ -20,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(value = "菜品口味")
-public class DishFlavor implements Serializable {
+public class DishFlavor extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "口味id")
@@ -37,22 +33,6 @@ public class DishFlavor implements Serializable {
     //口味数据list
     @ApiModelProperty(value = "口味数据list")
     private String value;
-
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
-
-    @ApiModelProperty(value = "创建人")
-    @TableField(fill = FieldFill.INSERT)
-    private Long createUser;
-
-    @ApiModelProperty(value = "更新人")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Long updateUser;
 
     //是否删除
     @ApiModelProperty(value = "是否删除")

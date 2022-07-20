@@ -1,7 +1,5 @@
-package com.itheima.reggie.entity;
+package com.itheima.reggie.entity.mysql;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -10,13 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
 @ApiModel(value = "套餐")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Setmeal implements Serializable {
+public class Setmeal extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,23 +47,6 @@ public class Setmeal implements Serializable {
     //图片
     @ApiModelProperty(value = "图片")
     private String image;
-
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
-
-    @ApiModelProperty(value = "创建人")
-    @TableField(fill = FieldFill.INSERT)
-    private Long createUser;
-
-    @ApiModelProperty(value = "更新人")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Long updateUser;
-
 
     //是否删除
     @ApiModelProperty(value = "是否删除")

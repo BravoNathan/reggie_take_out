@@ -1,14 +1,17 @@
 package com.itheima.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.common.Result;
-import com.itheima.reggie.entity.Category;
+import com.itheima.reggie.entity.mysql.Category;
 import com.itheima.reggie.service.CategoryService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -49,6 +52,16 @@ public class CategoryController {
         categoryService.updateById(category);
         return Result.success("菜品分类修改成功");
 
+    }
+
+    @GetMapping("/list")
+    public Result<List<Category>> listResult(Category category){
+        List<Category> list = new LambdaQueryChainWrapper<Category>(categoryService.getBaseMapper())
+                .eq(category.getType() != null, Category::getType, category.getType())
+                .orderByAsc(Category::getSort)
+                .orderByDesc(Category::getUpdateTime)
+                .list();
+        return Result.success(list);
     }
 
 

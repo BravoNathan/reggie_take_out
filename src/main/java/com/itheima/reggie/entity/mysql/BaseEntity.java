@@ -1,36 +1,20 @@
-package com.itheima.reggie.entity;
+package com.itheima.reggie.entity.mysql;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * @Author: zhengyang.li
+ * @Date: 2022/7/20
+ */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ApiModel(value = "菜品/套餐分类")
-public class Category implements Serializable {
-
-    private static final long serialVersionUID = 11L;
-
-    @ApiModelProperty(value = "菜品分类/套餐分类id", required = true )
-    private Long id;
-
-    @ApiModelProperty(value = "菜品分类/套餐分类", required = true)
-    private Integer type;
-
-    @ApiModelProperty(value = "菜品/套餐名字")
-    private String name;
-
-    @ApiModelProperty(value = "顺序")
-    private Integer sort;
+@ApiModel(value = "实体类基类")
+public class BaseEntity {
 
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)
@@ -47,6 +31,4 @@ public class Category implements Serializable {
     @ApiModelProperty(value = "更新人")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
-
-
 }

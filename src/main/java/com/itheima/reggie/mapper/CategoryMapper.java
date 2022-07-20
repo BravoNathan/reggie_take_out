@@ -1,7 +1,7 @@
 package com.itheima.reggie.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.itheima.reggie.entity.Category;
+import com.itheima.reggie.entity.mysql.Category;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
