@@ -6,4 +6,5 @@ import com.itheima.reggie.entity.mysql.Category;
 public interface CategoryService extends IService<Category> {
 
     public void remote(Long id);
+
 }
