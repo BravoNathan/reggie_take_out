@@ -6,11 +6,17 @@ import com.itheima.reggie.Dto.PageDishDto;
 import com.itheima.reggie.Dto.SaveDishDto;
 import com.itheima.reggie.entity.mysql.Dish;
 
+import java.util.List;
+
 public interface DishService extends IService<Dish> {
 
-    public IPage<PageDishDto> pageDish(PageDishDto pageDishDto);
+    IPage<PageDishDto> pageDish(PageDishDto pageDishDto);
 
-    public void saveDish(SaveDishDto dto);
+    void saveDish(SaveDishDto dto);
 
-    public void deleteDish(Long id);
+    void deleteDish(List<Long> id);
+
+    void setStatus(int status, List<Long> id);
+
+    List<Dish> getCategoryDish(Long categoryId);
 }

@@ -87,23 +87,53 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteDish(Long id) {
+    public void deleteDish(List<Long> id) {
         log.info("正在删除dish：{}",id);
-        Dish dish = getById(id);
-        dish.setIsDeleted(1);
-        LambdaQueryWrapper<DishFlavor> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(DishFlavor::getDishId, id);
-        List<DishFlavor> dishFlavors = dishFlavorService.list(wrapper);
-        if(CollUtil.isNotEmpty(dishFlavors)){
-            dishFlavors.stream().map(flavor -> {
-                flavor.setIsDeleted(1);
-                return flavor;
-            }).collect(Collectors.toList());
-        }
-        dishFlavorService.updateBatchById(dishFlavors);
-        this.updateById(dish);
+        this.removeByIds(id);
+        id.stream().map(i ->{
+            LambdaQueryWrapper<DishFlavor> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(DishFlavor::getDishId, i);
+            DishFlavor dishFlavor = dishFlavorService.getOne(wrapper);
+            dishFlavorService.removeById(dishFlavor.getId());
+            return i;
+        });
+
+
+//        LambdaQueryWrapper<DishFlavor> wrapper = new LambdaQueryWrapper<>();
+//        wrapper.eq(DishFlavor::getDishId, id);
+//        List<DishFlavor> dishFlavors = dishFlavorService.list(wrapper);
+//        if(CollUtil.isNotEmpty(dishFlavors)){
+//            dishFlavors.stream().map(flavor -> {
+//                flavor.setIsDeleted(1);
+//                return flavor;
+//            }).collect(Collectors.toList());
+//        }
+//
+//        List<Long> idList = dishFlavors.stream().map(t -> t.getId()).collect(Collectors.toList());
+//        dishFlavorService.removeByIds(idList);
     }
 
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void setStatus(int status, List<Long> id) {
+        log.info("准备修改状态...");
+        List<Dish> dishes = id.stream()
+                        .map(i ->{
+                            Dish dish1 = this.getById(i);
+                            dish1.setStatus(status);
+                            return dish1;
+                        }).collect(Collectors.toList());
+        this.updateBatchById(dishes);
 
+    }
+
+
+    @Override
+    public List<Dish> getCategoryDish(Long categoryId) {
+        LambdaQueryWrapper<Dish> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Dish::getCategoryId, categoryId);
+        List<Dish> dishes = this.list(wrapper);
+        return  dishes;
+    }
 }
